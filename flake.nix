@@ -74,7 +74,7 @@
 
     in {
       lib = rec {
-        devShell = { nixpkgs, system }:
+        devShell = { system }:
           let
             pkgs = nixpkgs.legacyPackages.${system};
           in pkgs.mkShell {
@@ -88,7 +88,7 @@
             '';
           };
 
-        defaultZmk = { nixpkgs, system }:
+        defaultZmk = { system }:
         let
           pkgs = nixpkgs.legacyPackages.${system};
         in pkgs.fetchFromGitHub {
@@ -104,14 +104,13 @@
           , shields
           , config ? ./config
           , zmk ? null
-          , nixpkgs
           , system
          }:
         let
           pkgs = nixpkgs.legacyPackages.${system};
 
           realZmk = if zmk == null
-                    then defaultZmk { inherit nixpkgs system; }
+                    then defaultZmk { inherit system; }
                     else zmk;
 
           src = pkgs.stdenv.mkDerivation {
